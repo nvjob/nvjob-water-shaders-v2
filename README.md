@@ -8,7 +8,7 @@ You can also set the direction of water movement (for example, synchronize the d
 Supported rendering path deferred and forward (DepthTextureMode).
 This shader is well suited for decorative purposes, in scenes where water is not a key element.
 
-Full instructions and description - [nvjob.github.io/unity/nvjob-simple-water-shaders](https://nvjob.github.io/unity/nvjob-simple-water-shaders)<br>
+Full instructions and description - [nvjob.github.io/unity/nvjob-water-shaders-v2](https://nvjob.github.io/unity/nvjob-water-shaders-v2)<br>
 Versions 1.x - [nvjob.github.io/unity/nvjob-simple-water-shaders](https://nvjob.github.io/unity/nvjob-simple-water-shaders)<br>
 
 ### Features:
