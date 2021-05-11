@@ -39,4 +39,8 @@ For Unity version of at least 2019.1.8 (64-bit).
 
 -------------------------------------------------------------------
 
-![GitHub Logo](https://raw.githubusercontent.com/nvjob/nvjob.github.io/master/repo/unity%20assets/simple-water-shaders/pic/3.jpg)
+![GitHub Logo](https://nvjob.github.io/repo-a/unity/water-shaders-2/0.jpg)
+![GitHub Logo](https://nvjob.github.io/repo-a/unity/water-shaders-2/3.jpg)
+![GitHub Logo](https://nvjob.github.io/repo-a/unity/water-shaders-2/5.jpg)
+![GitHub Logo](https://nvjob.github.io/repo-a/unity/water-shaders-2/8.jpg)
+![GitHub Logo](https://nvjob.github.io/repo-a/unity/water-shaders-2/9.jpg)
