@@ -151,9 +151,8 @@ return UnpackNormal(lerp(float4(0.5, 0.5, 1, 1), tex, strength));
 void BlendNormal(inout float3 n1, float3 n2) {
 // https://blog.selfshadow.com/publications/blending-in-detail/
 #if defined(BLEND_NORMAL_RNM)
-float3 t = n1 * float3(2, 2, 2) + float3(-1, -1, 0);
-float3 u = n2 * float3(-2, -2, 2) + float3(1, 1, -1);
-n1 = normalize(t * dot(t, u) - u * t.z);
+n1.z += 1; n2.xy *= -1;
+n1 = normalize(n1 * dot(n1, n2) - n2 * n1.z);
 #elif defined(BLEND_NORMAL_PDN)
 n1 = normalize(float3(n1.xy / n1.z + n2.xy / n2.z, 1));
 #elif defined(BLEND_NORMAL_WHITEOUT)
