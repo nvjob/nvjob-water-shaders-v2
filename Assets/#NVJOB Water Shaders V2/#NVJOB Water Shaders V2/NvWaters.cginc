@@ -140,6 +140,14 @@ COMPUTE_EYEDEPTH(o.eyeDepth);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+float3 UnpackNormalScaled(float4 tex, float strength) {
+// https://forum.unity.com/threads/how-to-control-normal-map-strength-by-a-variable.366174/#post-2373555
+return UnpackNormal(lerp(float4(0.5, 0.5, 1, 1), tex, strength));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 float Noise(float2 uv, float gain, float amplitude, float frequency, float scale, float lacunarity, float octaves) {
 float result;
 float frequencyL = frequency;
