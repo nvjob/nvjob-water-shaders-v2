@@ -148,6 +148,24 @@ return UnpackNormal(lerp(float4(0.5, 0.5, 1, 1), tex, strength));
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+void BlendNormal(inout float3 n1, float3 n2) {
+// https://blog.selfshadow.com/publications/blending-in-detail/
+#if defined(BLEND_NORMAL_RNM)
+float3 t = n1 * float3(2, 2, 2) + float3(-1, -1, 0);
+float3 u = n2 * float3(-2, -2, 2) + float3(1, 1, -1);
+n1 = normalize(t * dot(t, u) - u * t.z);
+#elif defined(BLEND_NORMAL_PDN)
+n1 = normalize(float3(n1.xy / n1.z + n2.xy / n2.z, 1));
+#elif defined(BLEND_NORMAL_WHITEOUT)
+n1 = normalize(float3(n1.xy + n2.xy, n1.z * n2.z));
+#else // defined(BLEND_NORMAL_UDM)
+n1 = normalize(float3(n1.xy + n2.xy, n1.z));
+#endif
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 float Noise(float2 uv, float gain, float amplitude, float frequency, float scale, float lacunarity, float octaves) {
 float result;
 float frequencyL = frequency;

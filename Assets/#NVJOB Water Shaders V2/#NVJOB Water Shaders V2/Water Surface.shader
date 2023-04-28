@@ -132,12 +132,9 @@ float3 albedo = ((tex - 0.5) * _AlbedoContrast + 0.5).rgb;
 
 float3 normal = UnpackNormalScaled(tex2D(_NormalMap1, uvn), _NormalMap1Strength);
 #ifdef EFFECT_NORMALMAP2
-normal += UnpackNormalScaled(tex2D(_NormalMap2, uvnd * _NormalMap2Tiling), _NormalMap2Strength);
+BlendNormal(normal, UnpackNormalScaled(tex2D(_NormalMap2, uvnd * _NormalMap2Tiling), _NormalMap2Strength));
 #ifdef EFFECT_MICROWAVE
-normal -= UnpackNormalScaled(tex2D(_NormalMap2, (uv + uvnd) * 2 * _MicrowaveScale), _MicrowaveStrength);
-normal = normalize(normal / 3);
-#else
-normal = normalize(normal / 2);
+BlendNormal(normal, UnpackNormalScaled(tex2D(_NormalMap2, (uv + uvnd) * 2 * _MicrowaveScale), _MicrowaveStrength));
 #endif
 #endif
 
