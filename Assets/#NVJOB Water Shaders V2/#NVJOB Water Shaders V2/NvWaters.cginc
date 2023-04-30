@@ -140,6 +140,50 @@ COMPUTE_EYEDEPTH(o.eyeDepth);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+// https://forum.unity.com/threads/how-to-control-normal-map-strength-by-a-variable.366174/#post-2373555
+// Optimized version that will only lerp the xy parts of the normal vector
+// Copied unity `UnpackNormal` macro to optimize math further, instead of
+// normal.xy = UnpackNormal(packed).xy * strength;
+// normal.z = sqrt(1 - saturate(dot(normal.xy, normal.xy)));
+// This ensures a uniform vector result and does it only once
+// Note: lerp is not called anymore as we lerp toward (0,0,1)
+inline fixed3 UnpackNormalScaled(fixed4 packed, fixed strength) {
+fixed3 normal;
+#if defined(UNITY_NO_DXT5nm)
+normal.xy = packed.xy;
+#elif defined(UNITY_ASTC_NORMALMAP_ENCODING)
+normal.xy = packed.wy;
+#else
+packed.x *= packed.w;
+normal.xy = packed.xy;
+#endif
+normal.xy = (normal.xy * 2 - 1) * strength;
+normal.z = sqrt(1 - saturate(dot(normal.xy, normal.xy)));
+return normal;
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+inline void BlendNormal(inout fixed3 n1, fixed3 n2) {
+// https://blog.selfshadow.com/publications/blending-in-detail/
+#if defined(BLEND_NORMAL_RNM)
+n2.xy *= -1; n1.z += 1;
+n1 = normalize(n1 * dot(n1, n2) - n2 * n1.z);
+#elif defined(BLEND_NORMAL_PDN)
+n1 = normalize(fixed3(n1.xy / n1.z + n2.xy / n2.z, 1));
+#elif defined(BLEND_NORMAL_WHITEOUT)
+n1 = normalize(fixed3(n1.xy + n2.xy, n1.z * n2.z));
+#else // defined(BLEND_NORMAL_UDM)
+n1 = normalize(fixed3(n1.xy + n2.xy, n1.z));
+#endif
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 float Noise(float2 uv, float gain, float amplitude, float frequency, float scale, float lacunarity, float octaves) {
 float result;
 float frequencyL = frequency;

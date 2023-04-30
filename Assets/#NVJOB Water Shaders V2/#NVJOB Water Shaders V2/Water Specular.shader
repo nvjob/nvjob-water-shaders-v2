@@ -27,13 +27,13 @@ Properties{
 [HideInInspector][HDR]_SpecColor("Specular Color", Color) = (0.086,0.086,0.086,1)
 [HideInInspector]_SoftFactor("Soft Factor", Range(0.0001, 1)) = 0.5
 [HideInInspector]_NormalMap1("Normal Map 1", 2D) = "bump" {}
-[HideInInspector]_NormalMap1Strength("Normal Map 1 Strength", Range(0.001, 10)) = 1
+[HideInInspector]_NormalMap1Strength("Normal Map 1 Strength", Range(-3, 3)) = 1
 [HideInInspector][NoScaleOffset]_NormalMap2("Normal Map 2", 2D) = "bump" {}
 [HideInInspector]_NormalMap2Tiling("Normal Map 2 Tiling", float) = 0.7
-[HideInInspector]_NormalMap2Strength("Normal Map 2 Strength", Range(0.001, 10)) = 1
+[HideInInspector]_NormalMap2Strength("Normal Map 2 Strength", Range(-3, 3)) = 1
 [HideInInspector]_NormalMap2Flow("Normal Map 2 Flow", float) = 0.5
 [HideInInspector]_MicrowaveScale("Micro Waves Scale", Range(0.5, 10)) = 1
-[HideInInspector]_MicrowaveStrength("Micro Waves Strength", Range(0.001, 1.5)) = 0.5
+[HideInInspector]_MicrowaveStrength("Micro Waves Strength", Range(-1.5, 1.5)) = 0.5
 [HideInInspector]_ParallaxAmount("Parallax Amount", float) = 0.1
 [HideInInspector]_ParallaxFlow("Parallax Flow", float) = 40
 [HideInInspector]_ParallaxNormal2Offset("Parallax Normal Map 2 Offset", float) = 1
@@ -137,11 +137,11 @@ tex *= tex2D(_AlbedoTex2, uvd * _Albedo2Tiling);
 tex *= _AlbedoIntensity;
 float3 albedo = ((tex - 0.5) * _AlbedoContrast + 0.5).rgb;
 
-float3 normal = UnpackNormal(tex2D(_NormalMap1, uvn)) * _NormalMap1Strength;
+float3 normal = UnpackNormalScaled(tex2D(_NormalMap1, uvn), _NormalMap1Strength);
 #ifdef EFFECT_NORMALMAP2
-normal += UnpackNormal(tex2D(_NormalMap2, uvnd * _NormalMap2Tiling)) * _NormalMap2Strength;
+BlendNormal(normal, UnpackNormalScaled(tex2D(_NormalMap2, uvnd * _NormalMap2Tiling), _NormalMap2Strength));
 #ifdef EFFECT_MICROWAVE
-normal += UnpackNormal(tex2D(_NormalMap2, (uv + uvnd) * 2 * _MicrowaveScale)) * _MicrowaveStrength;
+BlendNormal(normal, UnpackNormalScaled(tex2D(_NormalMap2, (uv + uvnd) * 2 * _MicrowaveScale), _MicrowaveStrength));
 #endif
 #endif
 
